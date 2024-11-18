@@ -9,8 +9,8 @@ from tenacity import retry, wait_fixed, stop_after_attempt
 import time
 
 client = Client()
-BLUESKY_HANDLE = "dorianquelle.bsky.social"
-BLUESKY_APP_PASSWORD = "mwho-b5nl-apd4-gypj"
+BLUESKY_HANDLE = "xxx"
+BLUESKY_APP_PASSWORD = "xxx"
 client.login(BLUESKY_HANDLE, BLUESKY_APP_PASSWORD)
 
 @retry(wait=wait_fixed(5), stop=stop_after_attempt(2))
