@@ -12,9 +12,9 @@ import json
 
 # Connection setup
 conn = psycopg2.connect(
-    dbname="bluesky_backfill_new",
-    user="dorianquelle",
-    host="localhost"
+    dbname="xxx",
+    user="xxx",
+    host="xxx"
 )
 
 # Define the query
