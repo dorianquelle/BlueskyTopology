@@ -1,34 +1,45 @@
-## Code To Reproduce the Analysis of "Bluesky Network Topology, Polarization, and Algorithmic Curation"
+# Code To Reproduce the Analysis of "Bluesky Network Topology, Polarization, and Algorithmic Curation"
 
-To create the data for the analysis, unzip the DIDs.txt.gz file which contains all the DIDs of Users used in this analysis.
-Then run the download_repos_multip.py script with the following arguments:
-```
+## Data Preparation
+
+1. Unzip `DIDs.txt.gz` which contains all the DIDs of users used in this analysis
+2. Run the download script with:
+```bash
 python download_repos_multip.py --mode all
 ```
-This will download all the repositories for the DIDs and store them in the Data/DID_REPO/ folder.
-Code/PythonScripts/data_processing.py will create an SQL for the data. 
+This will download all repositories for the DIDs and store them in the `Data/DID_REPO/` folder.
 
+3. Run `Code/PythonScripts/data_processing.py` to create the SQL database.
 
-Main Analysis:
-00_CreateMBFC.ipynb creates the mapping of domains to political stances according to the MBFC (Media Bias Factcheck wesbite). 
-01_CreateSQL.ipynb creates the SQL and exports the necessary scripts to upload the data. 
-02_ActivityOverTime.ipynb
-- Creates Figure 1 - Activity over Time
-- Creates Table 5 - Top Domains
-03_TrainTransformer.ipynb
-Trains model to perform stance detection on Israel/Palestine content.
-04_Stance.ipynb 
-- Creates Figure 9: Proportion of Posts by Stance over time
-- Creates Table 1: User activity distributions
-- Creates Figures 2 & 3: Distribution of Interactions
-- Creates Figures 8 & 10: Heatmap of Ideologies vs Neighbourhood Ideology
-- Creates Figure 7: Distribution of Domains by Ideology
-05_TopologyOverTime.ipynb
-- Creates Figures 4 & 5: Structural Measures over Time
-06_Feeds.ipynb
-- Creates Table 2: Top Feeds on Bluesky
-- Creates Table 4: Distributions of Feeds
-- Creates Figure 6: Distribution of Interactions with Feeds
-07_TopicModel.ipynb
-- Creates Table 3: Topicmodel of Feeds
+## Main Analysis
+
+### Data Processing Notebooks
+* `00_CreateMBFC.ipynb` - Creates mapping of domains to political stances according to Media Bias Fact Check (MBFC)
+* `01_CreateSQL.ipynb` - Creates SQL database and exports upload scripts
+
+### Analysis Notebooks
+* `02_ActivityOverTime.ipynb`
+  - Figure 1: Activity over Time
+  - Table 5: Top Domains
+
+* `03_TrainTransformer.ipynb`
+  - Trains model for stance detection on Israel/Palestine content
+
+* `04_Stance.ipynb`
+  - Figure 9: Proportion of Posts by Stance over Time
+  - Table 1: User Activity Distributions
+  - Figures 2 & 3: Distribution of Interactions
+  - Figures 8 & 10: Heatmap of Ideologies vs Neighborhood Ideology
+  - Figure 7: Distribution of Domains by Ideology
+
+* `05_TopologyOverTime.ipynb`
+  - Figures 4 & 5: Structural Measures over Time
+
+* `06_Feeds.ipynb`
+  - Table 2: Top Feeds on Bluesky
+  - Table 4: Distributions of Feeds
+  - Figure 6: Distribution of Interactions with Feeds
+
+* `07_TopicModel.ipynb`
+  - Table 3: Topic Model of Feeds
 
