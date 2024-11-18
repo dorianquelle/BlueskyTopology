@@ -1,5 +1,5 @@
 """
-This script processes and uploads Bluesky social network data to a PostgreSQL database.
+This script processes and uploads Bluesky social network data to an SQL database.
 
 Main functions:
 
@@ -9,9 +9,9 @@ create_data_dict(file: str) -> dict:
     Output: Dictionary with Bluesky data types as keys and lists of entries as values.
 
 upload_data_to_sql(conn: psycopg2.extensions.connection, data: dict, verbose: bool = True) -> None:
-    Uploads processed Bluesky data to the PostgreSQL database.
+    Uploads processed Bluesky data to the SQL database.
     Input: 
-        conn: PostgreSQL database connection
+        conn: SQL database connection
         data: Dictionary of Bluesky data
         verbose: Boolean to control print statements
     Output: None (data is uploaded to the database)
@@ -78,10 +78,8 @@ def apply_if_type(value, func, default=''):
     try:
         return func(value)
     except (TypeError, KeyError, AttributeError) as e:
-        #print(f"Error: {e}")
         return default
     
-
 def profiles(x):
     df = pd.DataFrame(x["app.bsky.actor.profile"]).loc[:,["cid_entry",'description', 'displayName', 'did', 'createdAt']]
     df['createdAt'] = pd.to_datetime(df['createdAt'], utc=True, errors='coerce')
@@ -427,10 +425,10 @@ def process_and_upload_file(file):
         return
     # Connect to the database
     conn = psycopg2.connect(
-        dbname="bluesky_backfill_new",
-        user="dorianquelle",
-        password="",
-        host="localhost"
+        dbname="xxx",
+        user="xxx",
+        password="xxx",
+        host="xxx"
     )
 
     # Upload the data to the database

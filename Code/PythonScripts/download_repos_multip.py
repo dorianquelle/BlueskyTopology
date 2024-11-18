@@ -1,3 +1,60 @@
+"""
+BlueSky Repository Downloader
+============================
+
+This script downloads and processes BlueSky repositories using DIDs (Decentralized Identifiers).
+It supports multi-processing and multi-threading for efficient data collection.
+
+Prerequisites:
+-------------
+1. A text file named 'unique_dids.txt' in the parent directory containing one DID per line
+2. Required Python packages: pandas, requests, atproto, tqdm, tenacity
+
+Directory Structure:
+------------------
+- Data/
+    - full_download/   # Stores downloaded repository data
+    - DID_REV/        # Stores DID revision information
+- unique_dids.txt     # Input file with DIDs
+
+Usage:
+------
+1. Process all DIDs:
+   ```
+   python download_repos_multip.py
+   ```
+   or explicitly:
+   ```
+   python download_repos_multip.py --mode all
+   ```
+
+2. Process specific DID file:
+   ```
+   python download_repos_multip.py --mode process --input-file your_dids.txt
+   ```
+
+Optional Arguments:
+-----------------
+--processes: Number of processes to use (default: CPU count)
+--mode: Operation mode ['all', 'process'] (default: 'all')
+--input-file: Input file containing DIDs to process (required for 'process' mode)
+
+Output:
+-------
+1. Compressed JSON files in Data/full_download/
+   Format: chunk_[id]_[timestamp]_[uuid].json.gz
+
+2. Revision files in Data/DID_REV/
+   Format: rev_[chunk_id]_[uuid].txt
+   Content: did,revision,timestamp
+
+Performance:
+-----------
+- Uses CHUNK_SIZE of 100,000 DIDs per chunk
+- Employs THREADS_PER_PROCESS (10) threads per process
+- Automatically skips previously processed DIDs
+"""
+
 import pandas as pd
 import concurrent.futures
 import requests
@@ -194,23 +251,9 @@ def save_dids_to_file(dids, filename):
 def main():
     parser = argparse.ArgumentParser(description='Process DIDs with multiprocessing and multithreading.')
     parser.add_argument('--processes', type=int, default=multiprocessing.cpu_count(), help='Number of processes to use')
-    parser.add_argument('--mode', choices=['all', 'split', 'process'], default='all', help='Operation mode')
+    parser.add_argument('--mode', choices=['all', 'process'], default='all', help='Operation mode')
     parser.add_argument('--input-file', help='Input file containing DIDs to process')
     args = parser.parse_args()
-
-    if args.mode == 'split':
-        all_dids = load_all_dids()
-        processed_dids = load_processed_dids()
-        laptop_dids, server_dids = split_remaining_dids(all_dids, processed_dids, 0.7)
-        
-        laptop_file = f"laptop_dids_{uuid.uuid4()}.txt"
-        server_file = f"server_dids_{uuid.uuid4()}.txt"
-        
-        save_dids_to_file(laptop_dids, laptop_file)
-        save_dids_to_file(server_dids, server_file)
-        
-        print(f"DIDs split into '{laptop_file}' (70%) and '{server_file}' (30%)")
-        return
 
     if args.mode == 'process':
         if not args.input_file:
